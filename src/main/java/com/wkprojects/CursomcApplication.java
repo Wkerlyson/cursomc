@@ -1,4 +1,4 @@
-package com.wkprojetos;
+package com.wkprojects;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
