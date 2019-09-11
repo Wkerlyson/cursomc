@@ -1,5 +1,6 @@
 package com.wkprojects;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,20 @@ import com.wkprojects.domain.Address;
 import com.wkprojects.domain.Category;
 import com.wkprojects.domain.City;
 import com.wkprojects.domain.Client;
+import com.wkprojects.domain.Demand;
+import com.wkprojects.domain.Payment;
+import com.wkprojects.domain.PaymentWithTicket;
+import com.wkprojects.domain.PaymentoWithCard;
 import com.wkprojects.domain.Product;
 import com.wkprojects.domain.State;
 import com.wkprojects.domain.enums.ClientType;
+import com.wkprojects.domain.enums.PaymentStatus;
 import com.wkprojects.repositories.AddressRepository;
 import com.wkprojects.repositories.CategoryRepository;
 import com.wkprojects.repositories.CityRepository;
 import com.wkprojects.repositories.ClientRepository;
+import com.wkprojects.repositories.DemandRepository;
+import com.wkprojects.repositories.PaymentRepository;
 import com.wkprojects.repositories.ProductRepository;
 import com.wkprojects.repositories.StateRepository;
 
@@ -35,13 +43,19 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private CityRepository cityRepository;
-	
+
 	@Autowired
 	private ClientRepository clientRepository;
-	
+
 	@Autowired
 	private AddressRepository addressRepository;
 
+	@Autowired
+	private DemandRepository demandRepository;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -89,6 +103,23 @@ public class CursomcApplication implements CommandLineRunner {
 
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+		Demand dem1 = new Demand(null, sdf.parse("30/09/2017 10:32"), cli1, a1);
+		Demand dem2 = new Demand(null, sdf.parse("10/10/2017 19:35"), cli1, a2);
+
+		Payment pay1 = new PaymentoWithCard(null, PaymentStatus.SETTLED, dem1, 6);
+		dem1.setPayment(pay1);
+
+		Payment pay2 = new PaymentWithTicket(null, PaymentStatus.PENDING, dem2, sdf.parse("20/10/2017 00:00"),
+				null);
+		dem2.setPayment(pay2);
+
+		cli1.getDemands().addAll(Arrays.asList(dem1, dem2));
+
+		demandRepository.saveAll(Arrays.asList(dem1, dem2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 
 	}
 
