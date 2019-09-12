@@ -126,9 +126,9 @@ public class CursomcApplication implements CommandLineRunner {
 		demandRepository.saveAll(Arrays.asList(dem1, dem2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 		
-		DemandItem ip1 = new DemandItem(dem1, p1,1, 0.00, 2000.00);
-		DemandItem ip2 = new DemandItem(dem1, p3, 2, 0.00, 80.00);
-		DemandItem ip3 = new DemandItem(dem2, p2,1,100.00, 800.00);
+		DemandItem ip1 = new DemandItem(dem1, p1,1, 2000.00, 0.00);
+		DemandItem ip2 = new DemandItem(dem1, p3, 2, 80.00, 0.00);
+		DemandItem ip3 = new DemandItem(dem2, p2,1, 800.00, 100.00);
 		
 		dem1.getItems().addAll(Arrays.asList(ip1, ip2));
 		dem2.getItems().addAll(Arrays.asList(ip3));
