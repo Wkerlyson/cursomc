@@ -13,6 +13,7 @@ import com.wkprojects.domain.Category;
 import com.wkprojects.domain.City;
 import com.wkprojects.domain.Client;
 import com.wkprojects.domain.Demand;
+import com.wkprojects.domain.DemandItem;
 import com.wkprojects.domain.Payment;
 import com.wkprojects.domain.PaymentWithTicket;
 import com.wkprojects.domain.PaymentoWithCard;
@@ -24,6 +25,7 @@ import com.wkprojects.repositories.AddressRepository;
 import com.wkprojects.repositories.CategoryRepository;
 import com.wkprojects.repositories.CityRepository;
 import com.wkprojects.repositories.ClientRepository;
+import com.wkprojects.repositories.DemandItemRepository;
 import com.wkprojects.repositories.DemandRepository;
 import com.wkprojects.repositories.PaymentRepository;
 import com.wkprojects.repositories.ProductRepository;
@@ -55,6 +57,9 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private DemandItemRepository demandItemRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -120,6 +125,19 @@ public class CursomcApplication implements CommandLineRunner {
 
 		demandRepository.saveAll(Arrays.asList(dem1, dem2));
 		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
+		
+		DemandItem ip1 = new DemandItem(dem1, p1,1, 0.00, 2000.00);
+		DemandItem ip2 = new DemandItem(dem1, p3, 2, 0.00, 80.00);
+		DemandItem ip3 = new DemandItem(dem2, p2,1,100.00, 800.00);
+		
+		dem1.getItems().addAll(Arrays.asList(ip1, ip2));
+		dem2.getItems().addAll(Arrays.asList(ip3));
+		
+		p1.getItems().addAll(Arrays.asList(ip1));
+		p2.getItems().addAll(Arrays.asList(ip3));
+		p3.getItems().addAll(Arrays.asList(ip2));
+		
+		demandItemRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 
 	}
 
